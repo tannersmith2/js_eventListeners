@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>The Todo List</h1>
+    <div>
+        <form id="todoForm">
+        <div>Add your 'todos' below:</div>
+        <input id="todoInput" type="text" />
+        <input id="submitBtn" type="submit" />
+        </form>
+    </div>
+    <div id="content">
+        <ul id="todoContainer">
+
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+
+        const deleteElement = (event) => {
+             console.log(event);
+
+            let delBtn = event.target;
+            let delIndex = delBtn.id.split('_')[1];
+
+            console.log(delIndex);
+
+            todoList.splice(delIndex, 1);
+
+            console.log(todoList);
+
+            renderList();
+        }
+
+        const handleSubmit = (event) =>
+        {
+            // Do not submit the form
+            event.preventDefault()
+
+            // Add the newly submitted value to the global todoList
+            saveNewTodo(event);
+
+            // Use the Globla todoList to populate our list on the page
+            renderList();
+        }
+
+        // Grab the new todoListTxt and save it to the todoList
+        const saveNewTodo = () => {
+            const newTodo = document.getElementById('todoInput');
+
+            const newTodoTxt = newTodo.value;
+
+            todoList.push(newTodoTxt);
+        }
+
+        // Loop through the global todoList and Display them on the page
+        const renderList = () =>{
+
+            // Grab the UL that holds the list items
+            let todoContainer = document.getElementById('todoContainer');
+
+            // Clear the HTML of the UL
+            todoContainer.innerHTML = "";
+
+            // Loop through the todoList, creating elements, adding them to the UL
+            for(let i=0; i<todoList.length; i++){
+                let newListItem = document.createElement('li');
+                newListItem.id = `todoItem_${i}`;
+
+                newListItem.innerHTML = `<span id="todoText_${i}">${todoList[i]}</span><button id="delBtn_${i}" onclick="deleteElement(event)">X</button>`;
+
+                todoContainer.append(newListItem);
+            }
+
+        }
+
+        // Our global list of todo items
+        const todoList = [];
+
+        // Grab the todoForm
+        let todoForm = document.getElementById('todoForm');
+
+        // Assign an eventListener
+        todoForm.addEventListener("submit", handleSubmit);
+
+    </script>
+</body>
+</html>
